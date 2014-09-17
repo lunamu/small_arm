@@ -91,7 +91,7 @@ int data_process(char* i_)
 	int Operand2 = bchar_to_int(operand2);
 	int I = i_[6]-'0';
 	int S = i_[11]-'0';
-	printf("Opcode = %s\n Rn = %d\n Rd = %d\n Operand2 = %d\n I = %d\n S = %d\n", d_opcode, Rn, Rd, Operand2, I, S);
+	printf("Opcode = %s\n Rn = %d\n Rd = %d\n Operand2 = %s\n I = %d\n S = %d\n", d_opcode, Rn, Rd, byte_to_binary(Operand2), I, S);
 
 
 
@@ -140,32 +140,38 @@ int data_process(char* i_)
 	if(!strcmp(d_opcode,"0111"))
 	{
 		printf("--- This is an RSC instruction. \n");
-		RSC(i_);return 0;
+		RSC(Rd, Rn, Operand2, I, S);
+		return 0;
 	}			
 	if(!strcmp(d_opcode,"1000"))
 	{
 		printf("--- This is a TST instruction. \n");
-		TST(i_);return 0;
+		TST(Rd, Rn, Operand2, I, S);
+		return 0;
 	}	
 	if(!strcmp(d_opcode,"1001"))
 	{
 		printf("--- This is a TEQ instruction. \n");
-		TEQ(i_);return 0;
+		TEQ(Rd, Rn, Operand2, I, S);
+		return 0;
 	}	
 	if(!strcmp(d_opcode,"1010"))
 	{
 		printf("--- This is a CMP instruction. \n");
-		CMP(i_);return 0;
+		CMP(Rd, Rn, Operand2, I, S);
+		return 0;
 	}	
 	if(!strcmp(d_opcode,"1011"))
 	{
 		printf("--- This is a CMN instruction. \n");
-		CMN(i_);return 0;
+		CMN(Rd, Rn, Operand2, I, S);
+		return 0;
 	}	
 	if(!strcmp(d_opcode,"1100"))
 	{
 		printf("--- This is an ORR instruction. \n");
-		ORR(i_);return 0;
+		ORR(Rd, Rn, Operand2, I, S);
+		return 0;
 	}	
 	if(!strcmp(d_opcode,"1101"))
 	{
@@ -176,12 +182,14 @@ int data_process(char* i_)
 	if(!strcmp(d_opcode,"1110"))
 	{
 		printf("--- This is a BIC instruction. \n");
-		BIC(i_);return 0;
+		BIC(Rd, Rn, Operand2, I, S);
+		return 0;
 	}	
 	if(!strcmp(d_opcode,"1111"))
 	{
 		printf("--- This is an MVN instruction. \n");
-		MVN(i_);return 0;
+		MVN(Rd, Rn, Operand2, I, S);
+		return 0;
 	}	
 	return 1;	
 }
@@ -311,8 +319,8 @@ void process_instruction()
     printf("The instruction is: %x \n", inst_word);
     printf("32******24******16******8*******\n");
     printf("%s \n", byte_to_binary32(inst_word));
-    printf("The COND is: %s\n", byte_to_binary(COND(inst_word)));
-    printf("The OPCODE is: %s\n", byte_to_binary(OPCODE(inst_word)));
+    //printf("The COND is: %s\n", byte_to_binary(COND(inst_word)));
+    //printf("The OPCODE is: %s\n", byte_to_binary(OPCODE(inst_word)));
     decode_and_execute(byte_to_binary32(inst_word));
     NEXT_STATE.PC += 4;
 
